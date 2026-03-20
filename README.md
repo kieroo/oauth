@@ -2,11 +2,24 @@
 
 这是一个使用 **Java 17** 编写的最小 OAuth 2.0 示例程序，不依赖 Spring 等大型框架，直接使用 JDK 自带的 `HttpServer` 实现了一个可运行的 Demo。
 
+## MVC 结构
+
+项目现在按照更标准的 MVC 方式拆分：
+
+- `controller/`：处理 HTTP 请求和路由分发。
+- `service/`：封装授权码、令牌、客户端注册和 PKCE 等业务逻辑。
+- `model/`：定义 `Client`、`AuthorizationCode`、`AccessToken` 等领域模型。
+- `view/`：负责首页和回调页的 HTML 渲染。
+- `util/`：放置表单解析、响应写回、HTML 转义、随机令牌生成等通用工具。
+
+入口仍然是 `com.example.oauth.OAuthDemoServer`，负责组装各层并启动服务器。
+
 ## 功能
 
 - `GET /authorize`：模拟授权端点，签发授权码。
 - `POST /token`：使用授权码换取 Bearer Token。
 - `GET /resource`：访问受保护资源。
+- `GET /callback`：展示授权回调结果页面。
 - 支持简化版 PKCE 校验（`plain` 和 `S256`）。
 
 ## 运行方式
@@ -31,6 +44,7 @@ java -cp out com.example.oauth.OAuthDemoServerSelfTest
 - 授权端点：<http://localhost:8080/authorize>
 - Token 端点：<http://localhost:8080/token>
 - 资源端点：<http://localhost:8080/resource>
+- 回调页面：<http://localhost:8080/callback>
 
 ## 内置客户端
 
